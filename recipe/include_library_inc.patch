@@ -1,0 +1,15 @@
+diff --git a/setup.py b/setup.py
+index 5eb54b4..c57f635 100644
+--- a/setup.py
++++ b/setup.py
+@@ -183,6 +183,10 @@ if BUILD_WITH_SYSTEM_CARES:
+ EXTENSION_INCLUDE_DIRECTORIES = (
+     (PYTHON_STEM,) + CORE_INCLUDE + SSL_INCLUDE + ZLIB_INCLUDE +
+     NANOPB_INCLUDE + CARES_INCLUDE + ADDRESS_SORTING_INCLUDE)
++if "win32" in sys.platform:
++  LIBRARY_INC = os.environ.get('LIBRARY_INC', None)
++  if LIBRARY_INC is not None:
++    EXTENSION_INCLUDE_DIRECTORIES += (LIBRARY_INC, )
+ 
+ EXTENSION_LIBRARIES = ()
+ if "linux" in sys.platform:

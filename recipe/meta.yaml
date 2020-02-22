@@ -8,9 +8,9 @@ source:
   url: https://pypi.io/packages/source/g/grpcio/grpcio-{{ version }}.tar.gz
   sha256: 5ae532b93cf9ce5a2a549b74a2c35e3b690b171ece9358519b3039c7b84c887e
   patches:
-    - windows_ssl_lib_names.patch             # [win and openssl != "1.1.1" and openssl != "1.1.1a"]
-    - windows_ssl_lib_names_openssl111.patch  # [win and (openssl == "1.1.1" or openssl == "1.1.1a")]
-    - extra_include_and_lib_dirs.patch        # [win]
+    - 0001-Monkey-patch-distutils.ccompiler.spawn-to-elide-std-.patch
+    - 0002-windows-ssl-lib-names.patch
+    - 0001-fix-win-setup-cmds.patch
 
 build:
   number: 0
@@ -19,8 +19,8 @@ build:
 
 requirements:
   build:
-    - {{ compiler('c') }}     # [not win]
-    - {{ compiler('cxx') }}   # [not win]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
   host:
     - python
     - pip
@@ -31,8 +31,6 @@ requirements:
     - zlib
     - openssl
     - c-ares            # [unix]
-    - m2w64-toolchain   # [win]
-    - libpython         # [win]
   run:
     - python
     - setuptools
@@ -42,7 +40,6 @@ requirements:
     - zlib
     - openssl
     - {{ pin_compatible("c-ares") }}  # [unix]
-    - m2w64-gcc-libs   # [win]
 
 test:
   imports:
